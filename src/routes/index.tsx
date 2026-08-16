@@ -1,11 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroImage from "@/assets/bangkok-hero.jpg";
+import { CtaButton, Eyebrow, InlineCta, Section, TELEGRAM } from "@/components/landing/shared";
+import { Packages } from "@/components/landing/packages";
+import { Testimonials } from "@/components/landing/testimonials";
+import { Faq, FAQ_ITEMS } from "@/components/landing/faq";
 
-const TELEGRAM = "https://t.me/bangkok_relocation";
-
-const TITLE = "Переезд в Бангкок — сопровождение релокации под ключ";
+const TITLE = "Переезд в Бангкок за 30–60 дней — виза, жильё, быт под ключ";
 const DESCRIPTION =
-  "Помощь с переездом в Бангкок: визы, жильё, банк, страховка и поддержка на месте. Город для жизни, а не бесконечный отпуск.";
+  "Сопровождение релокации в Бангкок: виза, жильё, банк, страховка, школа и поддержка на месте. Фиксированная цена, 120+ переездов, бесплатный разбор ситуации.";
+
+const FAQ_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+
+const SERVICE_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Сопровождение переезда в Бангкок",
+  serviceType: "Relocation consulting",
+  areaServed: "Bangkok, Thailand",
+  description: DESCRIPTION,
+  provider: { "@type": "Organization", name: "Bangkok Relocation" },
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,60 +39,17 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify(SERVICE_JSONLD) },
+      { type: "application/ld+json", children: JSON.stringify(FAQ_JSONLD) },
+    ],
   }),
   component: Index,
 });
 
-function CtaButton({
-  children,
-  variant = "primary",
-}: {
-  children: React.ReactNode;
-  variant?: "primary" | "ghost";
-}) {
-  const base =
-    "inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-base font-semibold transition-colors";
-  const styles =
-    variant === "primary"
-      ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft"
-      : "border border-ink-foreground/30 text-ink-foreground hover:bg-ink-foreground/10";
-  return (
-    <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className={`${base} ${styles}`}>
-      {children}
-    </a>
-  );
-}
-
-function Section({
-  id,
-  children,
-  tone = "default",
-}: {
-  id?: string;
-  children: React.ReactNode;
-  tone?: "default" | "surface";
-}) {
-  return (
-    <section
-      id={id}
-      className={`px-5 py-16 sm:py-24 ${tone === "surface" ? "bg-surface text-surface-foreground" : ""}`}
-    >
-      <div className="mx-auto w-full max-w-5xl">{children}</div>
-    </section>
-  );
-}
-
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-      {children}
-    </p>
-  );
-}
-
 function Index() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background pb-20 text-foreground md:pb-0">
       {/* Hero */}
       <header className="relative isolate overflow-hidden">
         <img
@@ -105,52 +84,87 @@ function Index() {
               Только Бангкок
             </p>
             <h1 className="text-4xl font-extrabold leading-[1.08] text-ink-foreground sm:text-6xl">
-              Переезд в Бангкок — спокойно, по шагам и без сюрпризов
+              Переезд в Бангкок за 30–60 дней — виза, жильё и быт под ключ
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-foreground/85">
-              Помогаю переехать в город, где можно жить долго: виза, жильё, банк, страховка и
-              поддержка на месте. Живу в Бангкоке не первый год, знаю процессы, язык и людей,
-              которые нужны для решения вопросов.
+              Беру на себя весь процесс: визу, поиск квартиры, банковский счёт, страховку и школу.
+              Живу в Бангкоке 6 лет, сопроводил 120+ переездов. Цена фиксируется до старта, вы
+              просто прилетаете в готовую жизнь.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <CtaButton>Написать в Telegram</CtaButton>
-              <CtaButton variant="ghost">Оставить заявку</CtaButton>
+              <CtaButton>Разобрать мою ситуацию бесплатно</CtaButton>
+              <CtaButton variant="ghost" href="#pricing">
+                Посмотреть цены
+              </CtaButton>
             </div>
-            <p className="mt-5 text-sm text-ink-foreground/70">
-              Первая консультация — короткий разговор о вашей ситуации, без обязательств.
-            </p>
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-foreground/75">
+              <li>6 лет в Бангкоке</li>
+              <li>120+ переездов</li>
+              <li>Ответ в течение часа</li>
+              <li>Первая консультация — бесплатно</li>
+            </ul>
           </div>
         </div>
       </header>
 
-      {/* Problem */}
+      {/* Why now */}
       <Section>
-        <Eyebrow>Почему об этом думают сейчас</Eyebrow>
+        <Eyebrow>Почему сейчас</Eyebrow>
         <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl">
-          Многие спокойно пересматривают горизонт планирования
+          Планировать на три года вперёд стало почти невозможно
         </h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-            <h3 className="text-lg font-semibold">Хочется предсказуемости</h3>
-            <p className="mt-3 text-muted-foreground">
-              Экономическая нестабильность, общее напряжение и неопределённость заставляют
-              трезво считать варианты на несколько лет вперёд. Это не побег и не эмоция — это
-              рациональный поиск более устойчивых условий для себя и семьи.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-            <h3 className="text-lg font-semibold">Пляж перестаёт работать через 3–4 месяца</h3>
-            <p className="mt-3 text-muted-foreground">
-              Пхукет и Паттайя отлично подходят для отпуска. Но при долгой жизни это узкий круг
-              общения, одни и те же места и лица, туристический ритм вокруг и ощущение, что жизнь
-              поставлена на паузу. Работать и растить детей в таком режиме тяжело.
-            </p>
-          </div>
+        <p className="mt-4 max-w-2xl text-muted-foreground">
+          Экономика в России ведёт себя непредсказуемо: цены растут, рубль штормит, доходы и планы
+          приходится пересчитывать каждые несколько месяцев. Это не про политику — это про то, что
+          сложно строить жизнь семьи, когда горизонт планирования сжался до квартала.
+        </p>
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {[
+            [
+              "Деньги обесцениваются быстрее, чем растут доходы",
+              "Накопления теряют вес, ставки и курс меняются рывками, а привычная «подушка» перестаёт казаться подушкой.",
+            ],
+            [
+              "Тревога за будущее детей",
+              "Школа, медицина, язык, возможности через 5–10 лет — родителям хочется понимать, что будет, а не гадать.",
+            ],
+            [
+              "Ощущение, что окно сужается",
+              "Каждый год визы, платежи и логистика становятся чуть сложнее. Те, кто уехал раньше, проходили путь легче.",
+            ],
+          ].map(([title, text]) => (
+            <div key={title} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
+            </div>
+          ))}
         </div>
+        <p className="mt-8 max-w-2xl text-lg font-medium">
+          Бангкок — рабочий и недорогой способ вернуть себе предсказуемость: сохранить доход,
+          снизить расходы и жить в нормальном большом городе, а не «пережидать».
+        </p>
+        <InlineCta
+          text="Напишите пару слов о своей ситуации — за час отвечу, реально ли это в вашем случае, во сколько обойдётся и с чего начать."
+          label="Разобрать мою ситуацию"
+        />
+      </Section>
+
+      {/* Beach problem */}
+      <Section tone="surface">
+        <Eyebrow>Частая ошибка</Eyebrow>
+        <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl">
+          Пляж перестаёт работать через 3–4 месяца
+        </h2>
+        <p className="mt-4 max-w-2xl text-muted-foreground">
+          Пхукет и Паттайя отлично подходят для отпуска. Но при долгой жизни это узкий круг
+          общения, одни и те же места и лица, туристический ритм вокруг и ощущение, что жизнь
+          поставлена на паузу. Работать и растить детей в таком режиме тяжело — а второй переезд
+          стоит денег и нервов.
+        </p>
       </Section>
 
       {/* Solution */}
-      <Section tone="surface">
+      <Section>
         <Eyebrow>Решение</Eyebrow>
         <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl">
           Бангкок — обычный большой город, в котором просто жить
@@ -170,6 +184,50 @@ function Index() {
             </div>
           ))}
         </div>
+      </Section>
+
+      {/* Cost of living */}
+      <Section tone="surface">
+        <Eyebrow>Сколько это стоит на самом деле</Eyebrow>
+        <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl">
+          Бангкок дешевле, чем кажется из Москвы
+        </h2>
+        <p className="mt-4 max-w-2xl text-muted-foreground">
+          Ориентировочный месячный бюджет семьи из трёх человек. Цифры реальные, не витринные —
+          на консультации считаем ваш вариант.
+        </p>
+        <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-card">
+          <table className="w-full text-left text-sm">
+            <thead className="border-b border-border text-muted-foreground">
+              <tr>
+                <th scope="col" className="px-5 py-3 font-semibold">
+                  Статья расходов
+                </th>
+                <th scope="col" className="px-5 py-3 font-semibold">
+                  В месяц
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border text-card-foreground">
+              {[
+                ["Квартира 1–2 спальни в хорошем районе", "45 000 – 75 000 ₽"],
+                ["Еда: дом, кафе, уличная кухня", "30 000 – 45 000 ₽"],
+                ["Транспорт (BTS/MRT, такси)", "6 000 – 10 000 ₽"],
+                ["Медстраховка на семью", "8 000 – 15 000 ₽"],
+                ["Школа или детский сад", "от 25 000 ₽"],
+              ].map(([item, price]) => (
+                <tr key={item}>
+                  <td className="px-5 py-3">{item}</td>
+                  <td className="px-5 py-3 font-medium">{price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Итого комфортная жизнь — примерно от 115 000 ₽ в месяц на семью. Для пары без детей —
+          заметно меньше.
+        </p>
       </Section>
 
       {/* Why us */}
@@ -194,7 +252,7 @@ function Index() {
       </Section>
 
       {/* Services */}
-      <Section tone="surface">
+      <Section>
         <Eyebrow>Услуги</Eyebrow>
         <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl">С чем помогаю</h2>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -224,8 +282,10 @@ function Index() {
         </div>
       </Section>
 
+      <Packages />
+
       {/* How it works */}
-      <Section>
+      <Section tone="surface">
         <Eyebrow>Как это работает</Eyebrow>
         <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl">Четыре простых шага</h2>
         <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -244,19 +304,33 @@ function Index() {
             </li>
           ))}
         </ol>
+        <InlineCta
+          text="Первый шаг занимает 10 минут: вы пишете в Telegram, я задаю несколько вопросов и говорю честно, что реально в вашем случае."
+          label="Написать в Telegram"
+        />
       </Section>
+
+      <Testimonials />
+
+      <Faq />
 
       {/* Final CTA */}
       <section className="px-5 py-16 sm:py-24">
         <div className="mx-auto w-full max-w-5xl rounded-3xl bg-ink px-6 py-14 text-center text-ink-foreground sm:px-14">
-          <h2 className="text-3xl font-bold sm:text-4xl">Расскажите о своей ситуации</h2>
+          <h2 className="text-3xl font-bold sm:text-4xl">
+            Через два месяца вы можете жить уже здесь
+          </h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-foreground/80">
             Напишите в Telegram пару слов о себе: кто едет, когда планируете и что уже пробовали.
-            Отвечу честно, реально ли это в вашем случае и что для этого нужно.
+            Отвечу в течение часа: реально ли это в вашем случае, сколько будет стоить и какой
+            первый шаг. Бесплатно и без обязательств.
           </p>
           <div className="mt-8 flex justify-center">
-            <CtaButton>Написать в Telegram</CtaButton>
+            <CtaButton>Разобрать мою ситуацию бесплатно</CtaButton>
           </div>
+          <p className="mt-5 text-sm text-ink-foreground/65">
+            Беру не больше 5 семей в месяц — чтобы вести каждый переезд лично.
+          </p>
         </div>
       </section>
 
@@ -270,6 +344,18 @@ function Index() {
           <p>© {new Date().getFullYear()} Bangkok Relocation</p>
         </div>
       </footer>
+
+      {/* Mobile sticky CTA */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/95 px-4 py-3 backdrop-blur md:hidden">
+        <a
+          href={TELEGRAM}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-full items-center justify-center rounded-xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground"
+        >
+          Написать в Telegram
+        </a>
+      </div>
     </main>
   );
 }
