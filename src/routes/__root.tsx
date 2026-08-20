@@ -16,16 +16,16 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Страница не найдена</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          Такой страницы нет или она была перемещена.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            На главную
           </Link>
         </div>
       </div>
@@ -41,10 +41,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          Страница не загрузилась
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Что-то пошло не так на нашей стороне. Попробуйте обновить страницу или вернитесь на главную.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -54,13 +54,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Попробовать снова
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            На главную
           </a>
         </div>
       </div>
@@ -73,12 +73,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Bangkok Bound" },
-      { name: "description", content: "Relocation consulting for moving to Bangkok" },
-      { property: "og:title", content: "Bangkok Bound" },
-      { property: "og:description", content: "Relocation consulting for moving to Bangkok" },
+      { title: "Bangkok Relocation — сопровождение переезда в Бангкок" },
+      { name: "description", content: "Сопровождение релокации в Бангкок для русскоязычных: виза, жильё, банк, страховка, школа. Фиксированная цена, личное ведение." },
+      { property: "og:title", content: "Bangkok Relocation — сопровождение переезда в Бангкок" },
+      { property: "og:description", content: "Сопровождение релокации в Бангкок для русскоязычных: виза, жильё, банк, страховка, школа." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Bangkok Relocation" },
+      { property: "og:locale", content: "ru_RU" },
+      { property: "og:image", content: "https://bkkstart.com/og-image.png" },
+      { property: "og:image:width", content: "1500" },
+      { property: "og:image:height", content: "844" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Bangkok Relocation — сопровождение переезда в Бангкок" },
+      { name: "twitter:description", content: "Сопровождение релокации в Бангкок для русскоязычных: виза, жильё, банк, страховка, школа." },
+      { name: "twitter:image", content: "https://bkkstart.com/og-image.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -92,6 +100,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "canonical", href: "https://bkkstart.com" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Bangkok Relocation",
+          url: "https://bkkstart.com",
+          inLanguage: "ru",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Bangkok Relocation",
+          url: "https://bkkstart.com",
+          logo: "https://bkkstart.com/favicon.ico",
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer service",
+            availableLanguage: ["Russian", "Thai"],
+          },
+          sameAs: ["https://t.me/bkkstart"],
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -102,7 +139,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru" dir="ltr">
       <head>
         <HeadContent />
       </head>

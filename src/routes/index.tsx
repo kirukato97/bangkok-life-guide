@@ -5,6 +5,7 @@ import { Packages } from "@/components/landing/packages";
 import { Testimonials } from "@/components/landing/testimonials";
 import { Faq, FAQ_ITEMS } from "@/components/landing/faq";
 
+const SITE = "https://bkkstart.com";
 const TITLE = "Переезд в Бангкок за 30–60 дней — виза, жильё, быт под ключ";
 const DESCRIPTION =
   "Сопровождение релокации в Бангкок: виза, жильё, банк, страховка, школа и поддержка на месте. Фиксированная цена, 120+ переездов, бесплатный разбор ситуации.";
@@ -21,12 +22,37 @@ const FAQ_JSONLD = {
 
 const SERVICE_JSONLD = {
   "@context": "https://schema.org",
-  "@type": "Service",
+  "@type": "ProfessionalService",
   name: "Сопровождение переезда в Бангкок",
   serviceType: "Relocation consulting",
-  areaServed: "Bangkok, Thailand",
+  areaServed: {
+    "@type": "City",
+    name: "Bangkok",
+    containedInPlace: {
+      "@type": "Country",
+      name: "Thailand",
+    },
+  },
   description: DESCRIPTION,
-  provider: { "@type": "Organization", name: "Bangkok Relocation" },
+  provider: {
+    "@type": "Organization",
+    name: "Bangkok Relocation",
+    url: SITE,
+  },
+  url: SITE,
+};
+
+const BREADCRUMB_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Главная",
+      item: SITE,
+    },
+  ],
 };
 
 export const Route = createFileRoute("/")({
@@ -37,11 +63,23 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE },
+      { property: "og:site_name", content: "Bangkok Relocation" },
+      { property: "og:locale", content: "ru_RU" },
+      { property: "og:image", content: "https://bkkstart.com/og-image.png" },
+      { property: "og:image:width", content: "1500" },
+      { property: "og:image:height", content: "844" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:image", content: "https://bkkstart.com/og-image.png" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "ru" },
     ],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(SERVICE_JSONLD) },
       { type: "application/ld+json", children: JSON.stringify(FAQ_JSONLD) },
+      { type: "application/ld+json", children: JSON.stringify(BREADCRUMB_JSONLD) },
     ],
   }),
   component: Index,
@@ -54,7 +92,7 @@ function Index() {
       <header className="relative isolate overflow-hidden">
         <img
           src={heroImage}
-          alt="Панорама Бангкока с линией надземного метро на закате"
+          alt="Панорама Бангкока с линией BTS Skytrain на закате — вид на город"
           width={1600}
           height={1008}
           className="absolute inset-0 -z-20 h-full w-full object-cover"
