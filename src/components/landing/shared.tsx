@@ -1,4 +1,4 @@
-export const TELEGRAM = "https://t.me/bangkok_relocation";
+export const TELEGRAM = "https://t.me/bkkstart";
 
 export function CtaButton({
   children,
